@@ -3,29 +3,38 @@ module songtoken::songtoken;
 use sui::url;
 use sui::coin;
 use sui::coin::TreasuryCap;
+use sui::sui::SUI;
+use sui::balance::Balance;
+use sui::balance;
 
 
-public struct SONGTOKEN<phantom ID> has drop{}
+public struct SONGTOKEN has drop{}
 
-public struct TokenVault<phantom T> has key {
+public struct TokenVault has key {
 	id: UID,
-	treasury_cap: TreasuryCap<T>,
+	treasury_cap: TreasuryCap<SONGTOKEN>,
 	remaining: u64,
-	payment_vault: coin::TreasuryCap<SUI>,
-	dao_multisig: address,
+	payment_vault: Balance<SUI>,
+	artist: address,
 }
-public fun create_artist_token<ID>(
-	witness: ArtistToken<ID>,
+
+public entry fun init(ctx: &mut TxContext) {
+	let witness = SONGTOKEN{};
+	transfer::share_object(witness);
+}
+
+public fun create_artist_token<>(
+	witness: SONGTOKEN,
 	percentage: u64,
 	symbol: vector<u8>,
 	name: vector<u8>,
 	description: vector<u8>,
 	icon_url: vector<u8>,
 	ctx: &mut TxContext
-): TokenVault<ArtistToken> {
+): TokenVault {
 	let (treasury, metadata) = coin::create_currency(
 		witness,
-		8, // decimals
+		8,
 		symbol,
 		name,
 		description,
@@ -36,8 +45,7 @@ public fun create_artist_token<ID>(
 	
 	let token_multiplier: u64 = 1000;
 	let total_supply = percentage * token_multiplier;
-	
-	let payment_vault = coin::zero<SUI>(ctx);
+	let payment_vault = balance::zero<SUI>();
 	
 	TokenVault {
 		id: object::new(ctx),
