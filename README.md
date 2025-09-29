@@ -6,9 +6,13 @@ A decentralized music tokenization platform built on Sui blockchain that enables
 *Features*
 
 Artist Token Minting: Artists can create tokenized representations of their songs with customizable supply
+
 USDC Integration: Seamless purchasing of song tokens using USDC stablecoin
+
 Fractional Ownership: Fans can buy fractional ownership of songs through tokenization
+
 Vault System: Secure token distribution and payment collection mechanism
+
 Built With
 Sui Move - Smart contract development
 USDC - Stablecoin integration for payments
