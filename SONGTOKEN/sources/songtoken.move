@@ -1,6 +1,8 @@
+
 module songtoken::songtoken;
 
 use sui::transfer;
+use sui::object::{Self, UID};
 use usdc::usdc::USDC;
 use sui::coin::{Self, Coin, TreasuryCap};
 use sui::balance::{Self, Balance};
@@ -36,7 +38,7 @@ public fun mint_artist_token(
 	percentage: u64,
 	ctx: &mut TxContext
 ) {
-		let token_multiplier: u64 = 1000;
+		let token_multiplier: u64 = 100000000;
 		let total_supply = percentage * token_multiplier;
 		
 		let minted_tokens = coin::mint(&mut treasury_cap, total_supply, ctx);
@@ -58,21 +60,27 @@ public fun buy_songtoken_with_usdc(
     vault: &mut TokenVault,
     payment: Coin<USDC>,
     ctx: &mut TxContext
-): Coin<SONGTOKEN> {
-    let price_per_token: u64 = 1;
+){
     let amount_paid = coin::value(&payment);
-    let tokens_to_buy = amount_paid / price_per_token;
     
-    assert!(tokens_to_buy > 0, 0);
+    // Simple 1:1 ratio for now - 1 USDC unit = 1 SONGTOKEN unit
+    // Since USDC has 6 decimals and SONGTOKEN has 8 decimals,
+    // we need to scale up USDC by 100 (10^2) to match
+    let tokens_to_buy = amount_paid - 1000;
 	
+	assert!(tokens_to_buy > 0, 0);
+    
     let available_tokens = coin::value(&vault.token_balance);
+    
+    // Add debug assertions to see what's happening
+    assert!(available_tokens > 0, 2); // Vault must have tokens
     assert!(tokens_to_buy <= available_tokens, 1);
-	
+    
     balance::join(&mut vault.payment_vault, coin::into_balance(payment));
-	
+    
     let buyer_tokens = coin::split(&mut vault.token_balance, tokens_to_buy, ctx);
-	
+    
     vault.remaining = vault.remaining - tokens_to_buy;
     
-    buyer_tokens
+    transfer::public_transfer(buyer_tokens,ctx.sender());
 }
