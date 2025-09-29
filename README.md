@@ -20,8 +20,7 @@ USDC - Stablecoin integration for payments
 
 Sui Framework - Blockchain infrastructure
 
-Getting Started
-bash
+# Getting Started bash
 # Build the project
 sui move build
 
