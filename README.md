@@ -26,14 +26,11 @@ sui move build
 
 # Deploy to Sui network
 sui client publish --gas-budget 100000000
-Usage
-1.
-Artists mint song tokens using mint_artist_token
-2.
-Fans purchase tokens with USDC via buy_songtoken_with_usdc
-3.
-Token ownership represents fractional rights to the song
 
+Usage
+1. Artists mint song tokens using mint_artist_token
+2. Fans purchase tokens with USDC via buy_songtoken_with_usdc
+3. Token ownership represents fractional rights to the song
 
 # Caution
 This prototype has not been fully tested.The buy_songtoken_with_usdc function payment amount is not set yet as so it will drain your testnet usdc.
