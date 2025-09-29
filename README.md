@@ -15,8 +15,11 @@ Vault System: Secure token distribution and payment collection mechanism
 
 Built With
 Sui Move - Smart contract development
+
 USDC - Stablecoin integration for payments
+
 Sui Framework - Blockchain infrastructure
+
 Getting Started
 bash
 # Build the project
@@ -31,4 +34,7 @@ Artists mint song tokens using mint_artist_token
 Fans purchase tokens with USDC via buy_songtoken_with_usdc
 3.
 Token ownership represents fractional rights to the song
+
+
+# Caution
 Use this prototype with. It has not been fully tested. buy_songtoken_with_usdc payment amount not set yet as so it can drain your testnet usdc.
