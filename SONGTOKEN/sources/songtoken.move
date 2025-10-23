@@ -42,7 +42,7 @@ public fun mint_artist_token(
 		let total_supply = percentage * token_multiplier;
 		
 		let minted_tokens = coin::mint(&mut treasury_cap, total_supply, ctx);
-		let payment_vault = balance::zero<USDC>();
+		let payment_vault = balance::zero<SUI>();
 	
 		let vault = TokenVault {
 			id: object::new(ctx),
